@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Jenkins-Unity-iOS自动化出包</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="freedom1613" />
+  <meta name="description" content="环境：Unity 5.6.3p4, XCode 8.3.3, Jenkins2.107.2
+参考资料：[1][2]
+Jenkins环境的配置就不多说了，网上搜搜就有，这里主要说下Unity导出的XCode工程的处理，包括Plist和工程配置（Framework的引用、外部文件的引入）等。
+
+" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@gohugoio" />
+    <meta name="twitter:title" content="Jenkins-Unity-iOS自动化出包" />
+    <meta name="twitter:description" content="环境：Unity 5.6.3p4, XCode 8.3.3, Jenkins2.107.2
+参考资料：[1][2]
+Jenkins环境的配置就不多说了，网上搜搜就有，这里主要说下Unity导出的XCode工程的处理，包括Plist和工程配置（Framework的引用、外部文件的引入）等。
+
+" />
+    <meta name="twitter:image" content="http://freedom1613.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Jenkins-Unity-iOS自动化出包" />
+  <meta property="og:description" content="环境：Unity 5.6.3p4, XCode 8.3.3, Jenkins2.107.2
+参考资料：[1][2]
+Jenkins环境的配置就不多说了，网上搜搜就有，这里主要说下Unity导出的XCode工程的处理，包括Plist和工程配置（Framework的引用、外部文件的引入）等。
+
+" />
+  <meta property="og:url" content="http://freedom1613.github.io/post/jenkins-unity-ios-ci/" />
+  <meta property="og:image" content="http://freedom1613.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.37.1" />
+
+
+<link rel="canonical" href="http://freedom1613.github.io/post/jenkins-unity-ios-ci/" />
+<link rel="alternative" href="http://freedom1613.github.io/index.xml" title="潜藏暮语" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="潜藏暮语" />
+<meta name="msapplication-tooltip" content="潜藏暮语" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="http://freedom1613.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="http://freedom1613.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="http://freedom1613.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="http://freedom1613.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="http://freedom1613.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="http://freedom1613.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="http://freedom1613.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="http://freedom1613.github.io/img/avatar.jpg" alt="Avatar">
+  
+  <h2 class="title">潜藏暮语</h2>
+  
+  <p class="subtitle">~ 个人备忘&amp;碎碎念 ~</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            ">
+            <a href="http://freedom1613.github.io/">首页</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://freedom1613.github.io/tags/">标签</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="http://freedom1613.github.io/about/">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:freedom1613@gmail.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="http://freedom1613.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Jenkins-Unity-iOS自动化出包</h1>
+      <p class="post-meta">@freedom1613 · Mar 10, 2018 · 2 min read</p>
+    </header>
+    <article class="post-content"><p>环境：Unity 5.6.3p4, XCode 8.3.3, Jenkins2.107.2</p>
+
+<p>参考资料：<sup><a href="#ref01">[1]</a></sup><sup><a href="#ref02">[2]</a></sup></p>
+
+<p>Jenkins环境的配置就不多说了，网上搜搜就有，这里主要说下Unity导出的XCode工程的处理，包括Plist和工程配置（Framework的引用、外部文件的引入）等。</p>
+
+<p></p>
+
+<p>使用了Unity5.x后提供的PlistDocument和PBXProject来进行导出工程的处理，命名空间是UnityEditor.iOS.Xcode，需要先在BuildSettings里安装iOS的支持模块。Unity4.x可以自行导入官方提供的支持代码 <a href="https://bitbucket.org/Unity-Technologies/xcodeapi">https://bitbucket.org/Unity-Technologies/xcodeapi</a></p>
+
+<h3 id="plist文件的处理">Plist文件的处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> OnProcessPlist(<span style="color:#66d9ef">string</span> path)
+    {
+        <span style="color:#66d9ef">var</span> plistPath = <span style="color:#a6e22e">Path</span>.Combine(path, PLIST_FILE_NAME);
+<span style="color:#75715e">#if UNITY_EDITOR_OSX
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> plist = <span style="color:#66d9ef">new</span> PlistDocument();
+        <span style="color:#a6e22e">plist</span>.ReadFromFile(plistPath);
+
+        <span style="color:#66d9ef">var</span> rootDict = <span style="color:#a6e22e">plist</span>.root;
+
+        <span style="color:#75715e">// 多语言版本时可在此修改app名
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">rootDict</span>.SetString(<span style="color:#e6db74">&#34;CFBundleDisplayName&#34;</span>, <span style="color:#e6db74">&#34;APPNAME&#34;</span>);
+
+        <span style="color:#75715e">// iOS9.0后根据苹果的ATS策略，如需应用内访问HTTP地址，需要将AllowsArbitraryLoads配置为true
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 该项PlayerSettings里可配置，Unity默认配置为true，如果项目相关地址已拥有SSL证书，可设置为false，这步配置可跳过
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 为了应用审核时能顺利通过，最好保证所有网络请求都是HTTPS加密，此处的配置只是为了本地调试方便
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> dictTransportSecurity = rootDict<span style="color:#a6e22e">[&#34;NSAppTransportSecurity&#34;]</span>.AsDict();
+        <span style="color:#a6e22e">dictTransportSecurity</span>.SetBoolean(<span style="color:#e6db74">&#34;NSAllowsArbitraryLoads&#34;</span>, <span style="color:#66d9ef">true</span>);
+
+        <span style="color:#75715e">// iOS10.0+进一步收紧对普通HTTP的访问限制，例如接入三方SDK，而他们的API服还是HTTP的，可在此配置中排除
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> dictDomainSecurity = <span style="color:#a6e22e">dictTransportSecurity</span>.CreateDict(<span style="color:#e6db74">&#34;NSExceptionDomains&#34;</span>);
+        <span style="color:#66d9ef">var</span> dictLocalAssetDownloadDoamin = <span style="color:#a6e22e">dictDomainSecurity</span>.CreateDict(<span style="color:#e6db74">&#34;example.domain&#34;</span>);
+        <span style="color:#a6e22e">dictLocalAssetDownloadDoamin</span>.SetBoolean(<span style="color:#e6db74">&#34;NSExceptionAllowsInsecureHTTPLoads&#34;</span>, <span style="color:#66d9ef">true</span>);
+        <span style="color:#a6e22e">dictLocalAssetDownloadDoamin</span>.SetBoolean(<span style="color:#e6db74">&#34;NSExceptionRequiresForwardSecrecy&#34;</span>, <span style="color:#66d9ef">false</span>);
+        <span style="color:#a6e22e">dictLocalAssetDownloadDoamin</span>.SetBoolean(<span style="color:#e6db74">&#34;NSIncludesSubdomains&#34;</span>, <span style="color:#66d9ef">true</span>);
+
+        <span style="color:#75715e">// 写回Plist
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">plist</span>.WriteToFile(plistPath);
+<span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span>    }</code></pre></div>
+<h3 id="pbxproject处理">PBXProject处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> OnProcessPBXProject(<span style="color:#66d9ef">string</span> path)
+    {
+<span style="color:#75715e">#if UNITY_EDITOR_OSX
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> projPath = <span style="color:#a6e22e">PBXProject</span>.GetPBXProjectPath(path);
+        <span style="color:#66d9ef">var</span> proj = <span style="color:#66d9ef">new</span> PBXProject();
+        <span style="color:#a6e22e">proj</span>.ReadFromString(<span style="color:#a6e22e">File</span>.ReadAllText(projPath));
+        <span style="color:#66d9ef">var</span> target = <span style="color:#a6e22e">proj</span>.TargetGuidByName(<span style="color:#e6db74">&#34;Unity-iPhone&#34;</span>);
+
+        <span style="color:#75715e">// 关掉Bitcode
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">proj</span>.SetBuildProperty(target, ENABLE_BITCODE_KEY, <span style="color:#e6db74">&#34;NO&#34;</span>);
+
+        <span style="color:#75715e">// Unity默认添加的dylib，随手删掉，后面引入相应的tbd
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">proj</span>.RemoveFrameworkFromProject(target, <span style="color:#e6db74">&#34;libiconv.2.dylib&#34;</span>);
+        <span style="color:#66d9ef">var</span> iconv2FileGuid = <span style="color:#a6e22e">proj</span>.FindFileGuidByProjectPath(<span style="color:#e6db74">&#34;libiconv.2.dylib&#34;</span>);
+        <span style="color:#66d9ef">if</span> (!<span style="color:#66d9ef">string</span>.IsNullOrEmpty(iconv2FileGuid))
+        {
+            <span style="color:#a6e22e">proj</span>.RemoveFile(iconv2FileGuid);
+        }
+
+        <span style="color:#75715e">// 添加内部Framework
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">proj</span>.AddFrameworkToProject(target, <span style="color:#e6db74">&#34;CoreTelephony.framework&#34;</span>, <span style="color:#66d9ef">true</span>);
+        <span style="color:#a6e22e">proj</span>.AddFrameworkToProject(target, <span style="color:#e6db74">&#34;StoreKit.framework&#34;</span>, <span style="color:#66d9ef">true</span>);
+
+        <span style="color:#75715e">// 此处tbd由相对路径引入，切记usr前没有/
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(<span style="color:#e6db74">&#34;usr/lib/libsqlite3.0.tbd&#34;</span>, <span style="color:#e6db74">&#34;Frameworks/libsqlite3.0.tbd&#34;</span>, <span style="color:#a6e22e">PBXSourceTree</span>.Sdk));
+        <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(<span style="color:#e6db74">&#34;usr/lib/libc++.tbd&#34;</span>, <span style="color:#e6db74">&#34;Frameworks/libc++.tbd&#34;</span>, <span style="color:#a6e22e">PBXSourceTree</span>.Sdk));
+        <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(<span style="color:#e6db74">&#34;usr/lib/libz.tbd&#34;</span>, <span style="color:#e6db74">&#34;Frameworks/libz.tbd&#34;</span>, <span style="color:#a6e22e">PBXSourceTree</span>.Sdk));
+        <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(<span style="color:#e6db74">&#34;usr/lib/libiconv.2.tbd&#34;</span>, <span style="color:#e6db74">&#34;Frameworks/libiconv.2.tbd&#34;</span>, <span style="color:#a6e22e">PBXSourceTree</span>.Sdk));
+
+        <span style="color:#75715e">// 外部文件的引入
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 可以通过自行丁仪预编译宏来区分不同平台文件的引入
+</span><span style="color:#75715e"></span><span style="color:#75715e">#if USE_OFFICIAL_SDK
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 设置Other linker flags
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">proj</span>.AddBuildProperty(target, <span style="color:#e6db74">&#34;OTHER_LDFLAGS&#34;</span>, <span style="color:#e6db74">&#34;-lz&#34;</span>);
+        <span style="color:#a6e22e">proj</span>.AddBuildProperty(target, <span style="color:#e6db74">&#34;OTHER_LDFLAGS&#34;</span>, <span style="color:#e6db74">&#34;-ObjC&#34;</span>);
+
+        <span style="color:#75715e">// SDK_PATH：外部文件目录的路径
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// dstPath：目标路径
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> dstPath = <span style="color:#a6e22e">Path</span>.Combine(path, SDK_DICNAME);
+        CopyAndReplaceDirectory(SDK_PATH, dstPath);
+
+        <span style="color:#75715e">// 需要设置CompileFlags的文件列表
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> noARCFiles = <span style="color:#66d9ef">new</span> List&lt;<span style="color:#66d9ef">string</span>&gt;() {
+            <span style="color:#e6db74">&#34;InterfaceSDK.mm&#34;</span>
+        };
+
+        <span style="color:#66d9ef">var</span> importFiles = GetImportFolderAllSubFiles(dstPath);
+        <span style="color:#66d9ef">var</span> flag = <span style="color:#66d9ef">false</span>;
+        <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> file <span style="color:#66d9ef">in</span> importFiles)
+        {
+            <span style="color:#66d9ef">var</span> fileRelativePath = <span style="color:#a6e22e">file</span>.Substring(<span style="color:#a6e22e">file</span>.LastIndexOf(SDK_DICNAME));
+
+            <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> suffix <span style="color:#66d9ef">in</span> LIBRARY_SUFFIX)
+            {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">fileRelativePath</span>.EndsWith(suffix))
+                {
+                    <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(fileRelativePath, fileRelativePath));
+
+                    <span style="color:#66d9ef">var</span> libDir = SDK_DICNAME;
+                    <span style="color:#66d9ef">var</span> index = <span style="color:#a6e22e">fileRelativePath</span>.LastIndexOf(<span style="color:#e6db74">&#34;/&#34;</span>);
+                    <span style="color:#66d9ef">if</span>(index &gt; <span style="color:#ae81ff">0</span>)
+                    {
+                        libDir = <span style="color:#a6e22e">fileRelativePath</span>.Substring(<span style="color:#ae81ff">0</span>, index);
+                    }
+
+                    <span style="color:#66d9ef">if</span>(suffix == <span style="color:#e6db74">&#34;framework&#34;</span>)
+                    {
+                                <span style="color:#a6e22e">proj</span>.AddBuildProperty(
+                                    target, 
+                                    <span style="color:#e6db74">&#34;FRAMEWORK_SEARCH_PATHS&#34;</span>, 
+                                    <span style="color:#e6db74">&#34;$(PROJECT_DIR)/&#34;</span> + libDir
+                                );
+                    }
+                    <span style="color:#66d9ef">if</span>(suffix == <span style="color:#e6db74">&#34;a&#34;</span>)
+                    {
+                                <span style="color:#a6e22e">proj</span>.AddBuildProperty(
+                                    target, 
+                                    <span style="color:#e6db74">&#34;LIBRARY_SEARCH_PATHS&#34;</span>, 
+                                    <span style="color:#e6db74">&#34;$(PROJECT_DIR)/&#34;</span> + libDir
+                                );
+                    }
+
+                    flag = <span style="color:#66d9ef">true</span>;
+                    <span style="color:#66d9ef">break</span>;
+                }
+            }
+            <span style="color:#66d9ef">if</span> (flag)
+            {
+                flag = <span style="color:#66d9ef">false</span>;
+                <span style="color:#66d9ef">continue</span>;
+            }
+
+            <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> item <span style="color:#66d9ef">in</span> noARCFiles)
+            {
+                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">fileRelativePath</span>.IndexOf(item) &gt; -<span style="color:#ae81ff">1</span>)
+                {
+                    <span style="color:#a6e22e">proj</span>.AddFileToBuildWithFlags(target, <span style="color:#a6e22e">proj</span>.AddFile(fileRelativePath, fileRelativePath), NO_ARC_FLAG);
+
+                    flag = <span style="color:#66d9ef">true</span>;
+                    <span style="color:#66d9ef">break</span>;
+                }
+            }
+            <span style="color:#66d9ef">if</span> (flag)
+            {
+                flag = <span style="color:#66d9ef">false</span>;
+                <span style="color:#66d9ef">continue</span>;
+            }
+
+            <span style="color:#a6e22e">proj</span>.AddFileToBuild(target, <span style="color:#a6e22e">proj</span>.AddFile(fileRelativePath, fileRelativePath));
+        }
+<span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// 写回Project
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">File</span>.WriteAllText(projPath, <span style="color:#a6e22e">proj</span>.WriteToString());
+<span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span>    }</code></pre></div>
+<h3 id="外部文件的处理">外部文件的处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> CopyAndReplaceDirectory(<span style="color:#66d9ef">string</span> srcPath, <span style="color:#66d9ef">string</span> dstPath)
+    {
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">Directory</span>.Exists(dstPath))
+            <span style="color:#a6e22e">Directory</span>.Delete(dstPath);
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">File</span>.Exists(dstPath))
+            <span style="color:#a6e22e">File</span>.Delete(dstPath);
+
+        <span style="color:#a6e22e">Directory</span>.CreateDirectory(dstPath);
+
+        <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> file <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">Directory</span>.GetFiles(srcPath))
+            <span style="color:#a6e22e">File</span>.Copy(file, <span style="color:#a6e22e">Path</span>.Combine(dstPath, <span style="color:#a6e22e">Path</span>.GetFileName(file)));
+
+        <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> dir <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">Directory</span>.GetDirectories(srcPath))
+            CopyAndReplaceDirectory(dir, <span style="color:#a6e22e">Path</span>.Combine(dstPath, <span style="color:#a6e22e">Path</span>.GetFileName(dir)));
+    }
+
+    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">static</span> List&lt;<span style="color:#66d9ef">string</span>&gt; GetImportFolderAllSubFiles(<span style="color:#66d9ef">string</span> path)
+    {
+        <span style="color:#66d9ef">var</span> files = <span style="color:#66d9ef">new</span> List&lt;<span style="color:#66d9ef">string</span>&gt;();
+
+        <span style="color:#66d9ef">var</span> folder = <span style="color:#66d9ef">new</span> DirectoryInfo(path);
+        <span style="color:#a6e22e">files</span>.AddRange(GetImportDirectories(folder));
+        <span style="color:#a6e22e">files</span>.AddRange(GetImportFiles(folder));
+
+        <span style="color:#66d9ef">return</span> files;
+    }
+
+    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">static</span> List&lt;<span style="color:#66d9ef">string</span>&gt; GetImportDirectories(DirectoryInfo folder)
+    {
+        <span style="color:#66d9ef">var</span> files = <span style="color:#66d9ef">new</span> List&lt;<span style="color:#66d9ef">string</span>&gt;();
+
+        <span style="color:#66d9ef">foreach</span> (DirectoryInfo next <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">folder</span>.GetDirectories())
+        {
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">Name</span>.EndsWith(<span style="color:#e6db74">&#34;framework&#34;</span>))
+            {
+                <span style="color:#a6e22e">files</span>.Add(<span style="color:#a6e22e">next</span>.FullName);
+                <span style="color:#66d9ef">continue</span>;
+            }
+            <span style="color:#a6e22e">files</span>.AddRange(GetImportFiles(next));
+
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">next</span>.GetDirectories().Length &gt; <span style="color:#ae81ff">0</span>)
+            {
+                <span style="color:#a6e22e">files</span>.AddRange(GetImportDirectories(next));
+            }
+        }
+
+        <span style="color:#66d9ef">return</span> files;
+    }
+
+    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">static</span> List&lt;<span style="color:#66d9ef">string</span>&gt; GetImportFiles(DirectoryInfo folder)
+    {
+        <span style="color:#66d9ef">var</span> files = <span style="color:#66d9ef">new</span> List&lt;<span style="color:#66d9ef">string</span>&gt;();
+
+        <span style="color:#66d9ef">foreach</span> (FileInfo next <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">folder</span>.GetFiles())
+        {
+            <span style="color:#a6e22e">files</span>.Add(<span style="color:#a6e22e">next</span>.FullName);
+        }
+
+        <span style="color:#66d9ef">return</span> files;
+    }</code></pre></div>
+<h2 id="未完成-待补充">&hellip;未完成，待补充</h2>
+
+<h3 id="参考资料">参考资料</h3>
+
+<ol>
+<li><a id="ref01"><a href="http://www.hailantown.com/2017/06/Jenkins%E4%B8%AD%E7%9A%84iOS%E6%89%93%E5%8C%85%E4%BB%BB%E5%8A%A1%E8%AE%BE%E8%AE%A1/">Lohanry - Jenkins中的iOS打包任务设计</a></a></li>
+<li><a id="ref02"><a href="https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html">Cocoa Keys - NSAppTransportSecurity</a></a></li>
+</ol></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="http://freedom1613.github.io/tags/unity3d"><span class="tag">Unity3D</span></a></li>
+        
+          <li><a href="http://freedom1613.github.io/tags/jenkins"><span class="tag">Jenkins</span></a></li>
+        
+          <li><a href="http://freedom1613.github.io/tags/xcode"><span class="tag">XCode</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 文章采用知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议，如果您希望引用或复制，请提供来源.
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 潜藏暮语</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="http://freedom1613.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

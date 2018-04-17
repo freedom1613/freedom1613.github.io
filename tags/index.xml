@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 潜藏暮语</title>
+    <link>http://freedom1613.github.io/tags/</link>
+    <description>Recent content in Tags on 潜藏暮语</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 文章采用知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议，如果您希望引用或复制，请提供来源.</copyright>
+    <lastBuildDate>Sat, 10 Mar 2018 13:20:45 +0800</lastBuildDate>
+    
+	<atom:link href="http://freedom1613.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Jenkins</title>
+      <link>http://freedom1613.github.io/tags/jenkins/</link>
+      <pubDate>Sat, 10 Mar 2018 13:20:45 +0800</pubDate>
+      
+      <guid>http://freedom1613.github.io/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unity3d</title>
+      <link>http://freedom1613.github.io/tags/unity3d/</link>
+      <pubDate>Sat, 10 Mar 2018 13:20:45 +0800</pubDate>
+      
+      <guid>http://freedom1613.github.io/tags/unity3d/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xcode</title>
+      <link>http://freedom1613.github.io/tags/xcode/</link>
+      <pubDate>Sat, 10 Mar 2018 13:20:45 +0800</pubDate>
+      
+      <guid>http://freedom1613.github.io/tags/xcode/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

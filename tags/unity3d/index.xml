@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unity3d on 潜藏暮语</title>
+    <link>http://freedom1613.github.io/tags/unity3d/</link>
+    <description>Recent content in Unity3d on 潜藏暮语</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 文章采用知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议，如果您希望引用或复制，请提供来源.</copyright>
+    <lastBuildDate>Sat, 10 Mar 2018 13:20:45 +0800</lastBuildDate>
+    
+	<atom:link href="http://freedom1613.github.io/tags/unity3d/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Jenkins-Unity-iOS自动化出包</title>
+      <link>http://freedom1613.github.io/post/jenkins-unity-ios-ci/</link>
+      <pubDate>Sat, 10 Mar 2018 13:20:45 +0800</pubDate>
+      
+      <guid>http://freedom1613.github.io/post/jenkins-unity-ios-ci/</guid>
+      <description>&lt;p&gt;环境：Unity 5.6.3p4, XCode 8.3.3, Jenkins2.107.2&lt;/p&gt;
+
+&lt;p&gt;参考资料：&lt;sup&gt;&lt;a href=&#34;#ref01&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;sup&gt;&lt;a href=&#34;#ref02&#34;&gt;[2]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Jenkins环境的配置就不多说了，网上搜搜就有，这里主要说下Unity导出的XCode工程的处理，包括Plist和工程配置（Framework的引用、外部文件的引入）等。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
