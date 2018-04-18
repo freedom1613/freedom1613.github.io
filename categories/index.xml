@@ -2,13 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 潜藏暮语</title>
-    <link>http://freedom1613.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on 潜藏暮语</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <copyright>© 文章采用知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议，如果您希望引用或复制，请提供来源.</copyright>
     
-	<atom:link href="http://freedom1613.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

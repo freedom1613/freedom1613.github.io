@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="http://localhost:1313/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://freedom1613.github.io/about/</loc>
+    <loc>http://localhost:1313/about/</loc>
     <lastmod>2018-04-16T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/post/jenkins-unity-ios-ci/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/post/jenkins-unity-ios-ci/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/tags/jenkins/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/tags/jenkins/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/post/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/post/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/tags/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/tags/unity3d/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/tags/unity3d/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/tags/xcode/</loc>
-    <lastmod>2018-03-10T13:20:45+08:00</lastmod>
+    <loc>http://localhost:1313/tags/xcode/</loc>
+    <lastmod>2018-04-18T16:00:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://freedom1613.github.io/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2018-04-16T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
